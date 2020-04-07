@@ -10,30 +10,27 @@ const productReducer = (state = initialState, action) => {
     switch (action.type) {
         case FETCH_PRODUCTS_PENDING:
             return {
-                ...state,
-                pending: true
+                pending: true,
+                products: [],
+                error: null
             }
         case FETCH_PRODUCTS_SUCCESS:
             return {
-                ...state,
                 pending: false,
-                products: action.products
+                products: action.products,
+                error: null
             }
         case FETCH_PRODUCTS_ERROR:
             return {
-                ...state,
                 pending: false,
+                products: [],
                 error: action.error
             }
         default:
             return {
-                state
+                ...state
             }
     }
 }
 
 export default productReducer;
-
-export const getProducts = state => state.products;
-export const getProductsPending = state => state.pending;
-export const getProductsError = state => state.error;
