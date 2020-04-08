@@ -1,11 +1,16 @@
-﻿import React from 'react';
-import { connect } from 'react-redux';
+﻿import React, { Component } from 'react';
 
+class Products extends Component {
+    render() {
+        return (
+            <div>
+                <p>{this.props.product.title}</p>
+                <p>{this.props.product.maker}</p>
+                <img src={this.props.product.img}></img>
+                <p>{this.props.product.description}</p>
+            </div>
+        );
+    }
+}
 
-const Products = props => (
-    <div className="Products">
-        <p>{props.count}</p>
-    </div>
-);
-
-export default connect()(Products);
+export default Products;

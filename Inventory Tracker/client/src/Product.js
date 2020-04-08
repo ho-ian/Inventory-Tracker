@@ -13,10 +13,12 @@ class ProductView extends Component {
 
     render() {
         console.log(this.props.products);
+        var pdlist = this.props.products.products.map(product => (
+            <Products product={product}/>));
         if (this.props.products.products.length > 0) {
             return (
                 <div>
-                    <p>{this.props.products.products[0].id}</p>
+                    {pdlist}
                 </div>
             );
         }
