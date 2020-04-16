@@ -7,7 +7,9 @@ class Products extends Component {
         this.state = {
             products: [],
             isLoading: true,
-            pageNum: 0
+            pageNum: 0,
+            numItems: 0,
+            numPages: 0
         };
         this.previousPage = this.previousPage.bind(this);
         this.nextPage = this.nextPage.bind(this);
@@ -18,16 +20,17 @@ class Products extends Component {
     }
 
     async fetchProducts(page = 1) {
-        page = page < 1 ? 1 : page;
 
         await fetch('products?page=' + page)
-            .then(res => console.log(res.json()))
-
+            .then(res => res.json())
             .then(res => {
                 this.setState({
-                    products: res,
+                    products: res[0].productList,
                     isLoading: false,
-                    pageNum: page
+                    pageNum: page,
+                    numItems: res[0].numItems,
+                    numPages: res[0].numPages,
+                    pageSize: res[0].pageSize
                 })
             });
     }
@@ -76,11 +79,15 @@ class Products extends Component {
         }
         else {
             let content = this.renderProductTable(this.state.products);
+            let firstItem = this.state.pageSize * this.state.pageNum - (this.state.pageSize - 1);
+            let lastItem = this.state.pageSize * this.state.pageNum;
+            lastItem = lastItem > this.state.numItems ? this.state.numItems : lastItem;
             return (
                 <div>
+                    <p>Displaying {firstItem} to {lastItem} of {this.state.numItems} items.</p>
                     {content}
-                    <button onClick={this.previousPage}>Previous Page</button>
-                    <button onClick={this.nextPage}>Next Page</button>
+                    {(this.state.pageNum == 1) ? null : <button onClick={this.previousPage}>Previous Page</button>}
+                    {(this.state.pageNum == this.state.numPages) ? null : < button onClick={this.nextPage}>Next Page</button>}
                 </div>
                 
             );
