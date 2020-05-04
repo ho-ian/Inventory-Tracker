@@ -1,27 +1,25 @@
-﻿using System;
+﻿using Inventory_Tracker.Models;
+using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Inventory_Tracker.Models;
 using Inventory_Tracker.Services;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
 using X.PagedList;
 
 namespace Inventory_Tracker.Controllers
 {
     [Route("[controller]")]
     [ApiController]
-    public class ProductsController : ControllerBase
+    public class AppointmentsController : ControllerBase
     {
-        public ProductsController(JsonFileProductService productService)
+        public AppointmentsController(JsonFileAppointmentService appointmentService)
         {
-            this.ProductService = productService;
+            this.AppointmentService = appointmentService;
         }
 
 
-        public JsonFileProductService ProductService { get;  }
+        public JsonFileAppointmentService AppointmentService { get; }
 
         public IEnumerable<Page> Get(int? page)
         {
@@ -30,10 +28,10 @@ namespace Inventory_Tracker.Controllers
                 return null;
             }
 
-            var listProductsUnpaged = ProductService.GetProducts();
+            var listProductsUnpaged = AppointmentService.GetAppointments();
 
             const int pageSize = 5;
-            var listPaged = listProductsUnpaged.ToPagedList<Products>(page ?? 1, pageSize);
+            var listPaged = listProductsUnpaged.ToPagedList<Appointments>(page ?? 1, pageSize);
 
             if (listPaged.PageNumber != 1 && page.HasValue && page > listPaged.PageCount)
             {
@@ -46,7 +44,7 @@ namespace Inventory_Tracker.Controllers
             returnObject.numItems = totalCount;
             returnObject.numPages = totalPages;
             returnObject.pageSize = pageSize;
-            returnObject.productList = listPaged;
+            returnObject.appointmentList = listPaged;
 
             var enumerable = new[] { returnObject };
             return enumerable;

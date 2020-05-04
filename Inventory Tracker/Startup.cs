@@ -35,7 +35,7 @@ namespace Inventory_Tracker
                 configuration.RootPath = "client/build";
             });
 
-            services.AddTransient<JsonFileProductService>();
+            services.AddTransient<JsonFileAppointmentService>();
 
             services.AddControllers();
 

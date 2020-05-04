@@ -13,5 +13,6 @@ namespace Inventory_Tracker.Models
         public int numPages { get; set; }
         public int pageSize { get; set; }
         public IPagedList<Products> productList { get; set; }
+        public IPagedList<Appointments> appointmentList { get; set; }
     }
 }
